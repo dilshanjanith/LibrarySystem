@@ -1,4 +1,5 @@
-﻿using LibrarySystem.Model;
+﻿using LibrarySystem.Application.Book;
+using LibrarySystem.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibrarySystem.API.Controllers
@@ -10,31 +11,41 @@ namespace LibrarySystem.API.Controllers
         [HttpGet]
         public IActionResult GetAllBooks()
         {
-            return Ok("Returning All Books!");
+            return Ok(BookReposetory.GetAllBooks());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetBook(int id) 
         {
-            return Ok($"Retunrn Book Id: {id}");
+            return Ok(BookReposetory.GetABook(id));
         }
 
         [HttpPost]
         public IActionResult CreateNewBook(BookDto book)
         {
-            return Ok("Book Created SuccessFully");
+            if (book == null) {
+                return BadRequest();
+            }
+            var newBooks = BookReposetory.CreateNewBook(book);
+            return CreatedAtAction(nameof(GetBook), new
+            {
+                Id = newBooks.Max(b => b.BookId),
+            }, newBooks);
+
         }
 
         [HttpPatch("{id}")]
-        public IActionResult UpdateBook(BookDto book) 
+        public IActionResult UpdateBook(int id, BookDto book) 
         {
-            return Ok("Book Updated SuccessFully");
+           BookReposetory.UpdateBook(book);
+           return NoContent();
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeleteBook(int id)
         {
-            return Ok($"Book Deleted SuccessFully  Id: {id}");
+            BookReposetory.DeleteBook(id);
+            return NoContent();
         }
 
 

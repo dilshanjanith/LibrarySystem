@@ -4,7 +4,7 @@ namespace LibrarySystem.Application.Book
 {
     public static class BookReposetory
     {
-        private static List<BookDto> book = new List<BookDto>()
+        private static List<BookDto> books = new List<BookDto>()
         {
             new BookDto { BookId = 1, BookName = "The Great Gatsby", Author = "F. Scott Fitzgerald", Catagory = "Fiction", RowNumber = 3, IssuedDate = new DateOnly(2025, 1, 20), ReturnDate = new DateOnly(2025, 2, 20) },
             new BookDto { BookId = 2, BookName = "1984", Author = "George Orwell", Catagory = "Dystopian", RowNumber = 5, IssuedDate = new DateOnly(2025, 1, 15), ReturnDate = new DateOnly(2025, 2, 15) },
@@ -17,5 +17,61 @@ namespace LibrarySystem.Application.Book
             new BookDto { BookId = 9, BookName = "Harry Potter and the Philosopher's Stone", Author = "J.K. Rowling", Catagory = "Fantasy", RowNumber = 10, IssuedDate = new DateOnly(2025, 1, 14), ReturnDate = new DateOnly(2025, 2, 14) },
             new BookDto { BookId = 10, BookName = "The Hobbit", Author = "J.R.R. Tolkien", Catagory = "Fantasy", RowNumber = 12, IssuedDate = new DateOnly(2025, 1, 26), ReturnDate = new DateOnly(2025, 2, 26) }
         };
+
+        public static List<BookDto> GetAllBooks()
+        {
+            return books;
+        }
+
+        public static bool IsExistBook(int id)
+        {
+            return books.Any(b => b.BookId == id);
+        }
+
+        public static BookDto? GetABook(int id)
+        {
+            var searchingBook = books.FirstOrDefault(b => b.BookId == id);
+            return searchingBook;
+        }
+
+        public static List<BookDto> CreateNewBook(BookDto book)
+        {
+            var newBookId = books.Max(b => b.BookId) + 1;
+            var newBook = new BookDto()
+            {
+                BookId = newBookId,
+                BookName = book.BookName,
+                Author = book.Author,
+                RowNumber = book.RowNumber,
+                IssuedDate = book.IssuedDate,
+                ReturnDate = book.ReturnDate
+            };
+            books.Add(newBook);
+            return books;
+        }
+
+        public static void UpdateBook(BookDto book)
+        {
+            var booktoUpdate = books.First(b => b.BookId == book.BookId);
+
+            if (booktoUpdate != null)
+            {
+                booktoUpdate.BookName = book.BookName;
+                booktoUpdate.Author = book.Author;
+                booktoUpdate.Catagory = book.Catagory;
+                booktoUpdate.RowNumber = book.RowNumber;
+                booktoUpdate.IssuedDate = book.IssuedDate;
+                booktoUpdate.ReturnDate = book.ReturnDate;
+            }
+        }
+
+        public static void DeleteBook(int bookId)
+        {
+            var bookToDelete = books.First(b => bookId == b.BookId);
+            if (bookToDelete != null)
+            {
+                books.Remove(bookToDelete);
+            }
+        }
     }
 }
