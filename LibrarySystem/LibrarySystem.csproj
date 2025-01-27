@@ -6,4 +6,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Model\ExceptionHandling\" />
+    <Folder Include="Model\ValitateBooks\" />
+  </ItemGroup>
+
 </Project>
