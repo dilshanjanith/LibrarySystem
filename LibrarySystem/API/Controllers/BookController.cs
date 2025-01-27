@@ -1,5 +1,6 @@
 ﻿using LibrarySystem.Application.Book;
 using LibrarySystem.Model;
+using LibrarySystem.Model.ValitateBooks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibrarySystem.API.Controllers
@@ -15,6 +16,7 @@ namespace LibrarySystem.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Book_IdValidation]
         public IActionResult GetBook(int id) 
         {
             return Ok(BookReposetory.GetABook(id));
@@ -26,6 +28,7 @@ namespace LibrarySystem.API.Controllers
             if (book == null) {
                 return BadRequest();
             }
+
             var newBooks = BookReposetory.CreateNewBook(book);
             return CreatedAtAction(nameof(GetBook), new
             {
@@ -35,6 +38,7 @@ namespace LibrarySystem.API.Controllers
         }
 
         [HttpPatch("{id}")]
+        [Book_IdValidation]
         public IActionResult UpdateBook(int id, BookDto book) 
         {
            BookReposetory.UpdateBook(book);
@@ -42,6 +46,7 @@ namespace LibrarySystem.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Book_IdValidation]
         public IActionResult DeleteBook(int id)
         {
             BookReposetory.DeleteBook(id);
